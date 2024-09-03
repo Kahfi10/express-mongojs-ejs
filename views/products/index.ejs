@@ -9,7 +9,11 @@
     <h1>All products</h1>
     <ul>
         <% for ( Product of product) { %>
-            <li> <%= Product.name %> - <%= Product.brand %></li>
+            <li>
+                <a href="/products/<%= Product._id %>">
+                    <%= Product.name %> - <%= Product.brand %>
+                </a>
+            </li>
         <% } %>
     </ul>
 </body>
