@@ -16,7 +16,11 @@ const productSchema = new mongoose.Schema({
     size: {
         type: String,
         enum: ['S', 'M', 'L', 'XL'],
-    }
+    },
+    brand: {
+        type: String,
+        required: true
+    },
 });
 
 const Product = mongoose.model('Product', productSchema);

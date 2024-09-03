@@ -18,6 +18,11 @@ app.get('/', (req, res) => {
     res.send('Hello Kahfi');
 })
 
+app.get('/products', async (req, res) => {
+    const product = await Product.find({});
+    res.render('products/index', { product });
+})
+
 app.listen(3000, () => {
     console.log('Server is running on http://127.0.0.1:3000');
 });

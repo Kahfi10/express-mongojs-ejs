@@ -10,18 +10,21 @@ mongoose.connect('mongodb://127.0.0.1/shop_db').then((result) => {
 const seedProduct = [
     {
         name: 'T-shirt',
+        brand: 'Nike',
         price: 150000,
         color: 'Red',
         size: 'S'
     },
     {
         name: 'Jacket',
+        brand: 'Adidas',
         price: 300000,
         color: 'Black',
         size: 'M'
     },
     {
         name: 'Hoodie',
+        brand: 'Puma',
         price: 250000,
         color: 'Grey',
         size: 'L'
@@ -29,6 +32,12 @@ const seedProduct = [
 ]
 
 Product.insertMany(seedProduct).then((result) => {
+    console.log(result)
+}).catch((err) => {
+    console.log(err)
+})
+
+Product.deleteMany({}).then((result) => {
     console.log(result)
 }).catch((err) => {
     console.log(err)
