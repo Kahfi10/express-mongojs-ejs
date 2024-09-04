@@ -5,6 +5,10 @@ const productSchema = new mongoose.Schema({
         type: String,
         required: true
     },
+    brand: {
+        type: String,
+        required: true
+    },
     price: {
         type: Number,
         required: true
@@ -13,13 +17,9 @@ const productSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    size: {
+    category: {
         type: String,
-        enum: ['S', 'M', 'L', 'XL'],
-    },
-    brand: {
-        type: String,
-        required: true
+        enum: ['Baju', 'Celana', 'Jaket']
     },
 });
 
