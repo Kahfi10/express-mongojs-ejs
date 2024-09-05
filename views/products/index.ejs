@@ -7,12 +7,15 @@
 </head>
 <body>
     <h1>All products</h1>
+    <% if(category !== 'All') { %>
+        <a href="/products">All Product</a>
+    <% } %>
     <a href="/products/create">add product</a>
     <ul>
-        <% for ( Product of product) { %>
+        <% for (product of products) { %>
             <li>
-                <a href="/products/<%= Product._id %>">
-                    <%= Product.name %> - <%= Product.brand %>
+                <a href="/products/<%= product._id %>">
+                    <%= product.name %> - <%= product.brand %>
                 </a>
             </li>
         <% } %>
