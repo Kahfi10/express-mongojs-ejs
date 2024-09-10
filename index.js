@@ -72,6 +72,23 @@ app.delete('/products/:id', wrapAsync(async (req, res) => {
     res.redirect('/products')
 }))
 
+const validatorHandler = err => {
+        err.status = 400
+        err.message = Object.values(err.errors).map(item => item.message)
+        return new ErrorHandler(err.message, err.status)
+}
+
+app.use((err, req, res, next) => {
+    console.dir(err)
+    next(err)
+    if (err.name === 'validationErrror') err = validatorHandler(err)
+    if (err.name === 'CastError') {
+        err.status = 404
+        err.message = 'Product not found'
+    }
+    next(err)
+})
+
 app.use((err, req, res, next) => {
     const { status = 500, message = 'Something went wrong' } = err;
     res.status(status).send(message);
