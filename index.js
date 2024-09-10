@@ -42,31 +42,43 @@ app.post('/products', async (req, res) => {
     res.redirect(`/products/${product._id}`);
 })
 
-app.get('/products/:id', async (req, res) => {
-    const { id } = req.params;
-    const product = await Product.findById(id);
-    res.render('products/show', { product });
+app.get('/products/:id', async (req, res, next) => {
+    try {
+        const { id } = req.params;
+        const product = await Product.findById(id);
+        res.render('products/show', { product });
+    } catch (error) {
+        next(new ErrorHandler(404, 'Product Not Found'));
+    }
 })
-app.get('/products/:id/edit', async (req, res) => {
+app.get('/products/:id/edit', async (req, res, next) => {
     try {
         const { id } = req.params;
         const product = await Product.findById(id);
         res.render('products/edit', { product });
     } catch (error) {
-        next (new ErrorHandler(404, 'Product not found'));
+        next(new ErrorHandler(412, 'Gagal Edit Product'));
     }
 })
 
-app.put('/products/:id', async (req, res) => {
-    const { id } = req.params;
+app.put('/products/:id', async (req, res, next) => {
+    try {
+        const { id } = req.params;
     const product = await Product.findByIdAndUpdate(id, req.body, { runValidators: true, new: true });
     res.redirect(`/products/${product._id}`);
+    } catch (error) {
+        next(new ErrorHandler(412, 'Gagal Update Product'));
+    }
 })
 
-app.delete('/products/:id', async (req, res) => {
-    const { id } = req.params
-    await Product.findByIdAndDelete(id)
-    res.redirect('/products')
+app.delete('/products/:id', async (req, res, next) => {
+    try {
+        const { id } = req.params
+        await Product.findByIdAndDelete(id)
+        res.redirect('/products')
+    } catch (error) {
+        next(new ErrorHandler(412, 'Gagal Delete Product'));
+    }
 })
 
 app.use((err, req, res, next) => {
