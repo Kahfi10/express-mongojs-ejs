@@ -6,6 +6,7 @@ const app = express();
 const ErrorHandler = require('./ErrorHandler');
 
 const Product = require('./models/products');
+const Garment = require('./models/garment');
 const { wrap } = require('module');
 
 mongoose.connect('mongodb://127.0.0.1/shop_db').then((result) => {
@@ -29,6 +30,21 @@ app.get('/', (req, res) => {
     res.send('Hello Kahfi');
 })
 
+app.get('/garments', wrapAsync(async (req, res) => {
+    const garments = await Garment.find({});
+    res.render('garment/index', { garments });
+}))
+
+app.get('/garments/create', (req, res) => {
+    res.render('garment/create')
+})
+
+app.post('/garments', wrapAsync(async (req, res) => {
+    const garment = new Garment(req.body)
+    await garment.save()
+    res.redirect('/garments')
+}))
+
 app.get('/products', wrapAsync(async (req, res) => {
     const { category } = req.query;
     if (category) {
@@ -43,11 +59,11 @@ app.get('/products/create', (req, res) => {
     res.render('products/create');
 })
 
-app.post('/products', async (req, res) => {
+app.post('/products', wrapAsync(async (req, res) => {
     const product = new Product(req.body);
     await product.save();
     res.redirect(`/products/${product._id}`);
-})
+}))
 
 app.get('/products/:id', wrapAsync(async (req, res) => {
     const { id } = req.params;
