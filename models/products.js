@@ -23,7 +23,7 @@ const productSchema = new mongoose.Schema({
     },
     garment: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'Garment'
+        ref: 'garment'
     }
 });
 
