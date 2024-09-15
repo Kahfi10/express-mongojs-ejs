@@ -45,6 +45,13 @@ app.post('/garments', wrapAsync(async (req, res) => {
     res.redirect('/garments')
 }))
 
+app.get('/garments/:id', wrapAsync(async (req, res) => {
+    const { id } = req.params;
+    const garment = await Garment.findById(id)
+    res.render('garment/show', { garment })
+}))
+
+
 app.get('/products', wrapAsync(async (req, res) => {
     const { category } = req.query;
     if (category) {
