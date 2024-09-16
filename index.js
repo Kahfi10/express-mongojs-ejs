@@ -47,7 +47,7 @@ app.post('/garments', wrapAsync(async (req, res) => {
 
 app.get('/garments/:id', wrapAsync(async (req, res) => {
     const { id } = req.params;
-    const garment = await Garment.findById(id)
+    const garment = await Garment.findById(id).populate('products');
     res.render('garment/show', { garment })
 }))
 
@@ -63,7 +63,6 @@ app.post('/garments/:garment_id/products', wrapAsync(async(req, res) =>{
     garment.products.push(product)
     await garment.save()
     await product.save()
-    console.log(garment);
     res.redirect(`/garments/${garment_id}`)
 }))
 
@@ -89,7 +88,7 @@ app.post('/products', wrapAsync(async (req, res) => {
 
 app.get('/products/:id', wrapAsync(async (req, res) => {
     const { id } = req.params;
-    const product = await Product.findById(id);
+    const product = await Product.findById(id).populate('garment')
     res.render('products/show', { product });
 }))
 app.get('/products/:id/edit', wrapAsync(async (req, res, next) => {

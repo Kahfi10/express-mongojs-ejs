@@ -12,12 +12,10 @@ const garmentSchema = new mongoose.Schema({
         type: String,
         required: [true, 'Contact tidak boleh kosong']
     },
-    products: {
+    products: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Product'
-    }
+    }]
 })
 
-const Garment = mongoose.model('Garment', garmentSchema);
-
-module.exports = Garment;
+module.exports = mongoose.model('Garment', garmentSchema);
