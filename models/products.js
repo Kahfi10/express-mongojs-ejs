@@ -21,7 +21,7 @@ const productSchema = new mongoose.Schema({
         type: String,
         enum: ['Baju', 'Celana', 'Jaket']
     },
-    garment: {
+    garment:{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'garment'
     }

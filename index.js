@@ -61,6 +61,7 @@ app.post('/garments/:garment_id/products', wrapAsync(async(req, res) =>{
     const garment = await Garment.findById(garment_id)
     const product = new Product(req.body)
     garment.products.push(product)
+    product.garment = garment
     await garment.save()
     await product.save()
     res.redirect(`/garments/${garment_id}`)
