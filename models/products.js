@@ -21,12 +21,10 @@ const productSchema = new mongoose.Schema({
         type: String,
         enum: ['Baju', 'Celana', 'Jaket']
     },
-    garment:{
+    garment:[{
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'garment'
-    }
+        ref: 'Garment'
+    }]
 });
 
-const Product = mongoose.model('Product', productSchema);
-
-module.exports = Product;
+module.exports = mongoose.model('Product', productSchema)
