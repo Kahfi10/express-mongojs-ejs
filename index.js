@@ -67,6 +67,12 @@ app.post('/garments/:garment_id/products', wrapAsync(async(req, res) =>{
     res.redirect(`/garments/${garment_id}`)
 }))
 
+app.delete('/garments/:garment_id/', wrapAsync(async (req, res) => {
+    const { garment_id } = req.params
+    await Garment.findOneAndDelete({_id: garment_id})
+    res.redirect('/garments')
+}))
+
 app.get('/products', wrapAsync(async (req, res) => {
     const { category } = req.query;
     if (category) {
@@ -89,9 +95,9 @@ app.post('/products', wrapAsync(async (req, res) => {
 
 app.get('/products/:id', wrapAsync(async (req, res) => {
     const { id } = req.params;
-    const product = await Product.findById(id).populate('garment')
+    const product = await Product.findById(id).populate('garment');
     res.render('products/show', { product });
-}))
+}));
 app.get('/products/:id/edit', wrapAsync(async (req, res, next) => {
     const { id } = req.params;
     const product = await Product.findById(id);
