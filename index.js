@@ -28,6 +28,11 @@ app.use(session({
 }))
 app.use(flash())
 
+app.use((req, res, next) => {
+    res.locals.flash_messages = req.flash('flash_messages')
+    next();
+})
+
 function wrapAsync(fn) {
     return function (req, res, next) {
         fn(req, res, next).catch(err => next(err))
@@ -40,7 +45,7 @@ app.get('/', (req, res) => {
 
 app.get('/garments', wrapAsync(async (req, res) => {
     const garments = await Garment.find({});
-    res.render('garment/index', { garments, message: req.flash('success') });
+    res.render('garment/index', { garments });
 }))
 
 app.get('/garments/create', (req, res) => {
@@ -50,7 +55,7 @@ app.get('/garments/create', (req, res) => {
 app.post('/garments', wrapAsync(async (req, res) => {
     const garment = new Garment(req.body)
     await garment.save()
-    req.flash('success', 'Garment Created Successfully!')
+    req.flash('flash_messages', 'Garment Created Successfully!')
     res.redirect('/garments')
 }))
 
