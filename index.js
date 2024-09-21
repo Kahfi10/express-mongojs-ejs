@@ -2,6 +2,8 @@ const path = require('path');
 const express = require('express');
 const methodOverride = require('method-override');
 const mongoose = require('mongoose');
+const session = require('express-session');
+const flash = require('connect-flash');
 const app = express();
 const ErrorHandler = require('./ErrorHandler');
 
@@ -19,6 +21,12 @@ app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 app.use(express.urlencoded({ extended: true }));
 app.use(methodOverride('_method'));
+app.use(session({
+    secret: 'keyboard-cat',
+    resave: false,
+    saveUninitialized: false
+}))
+app.use(flash())
 
 function wrapAsync(fn) {
     return function (req, res, next) {
@@ -32,7 +40,7 @@ app.get('/', (req, res) => {
 
 app.get('/garments', wrapAsync(async (req, res) => {
     const garments = await Garment.find({});
-    res.render('garment/index', { garments });
+    res.render('garment/index', { garments, message: req.flash('success') });
 }))
 
 app.get('/garments/create', (req, res) => {
@@ -42,6 +50,7 @@ app.get('/garments/create', (req, res) => {
 app.post('/garments', wrapAsync(async (req, res) => {
     const garment = new Garment(req.body)
     await garment.save()
+    req.flash('success', 'Garment Created Successfully!')
     res.redirect('/garments')
 }))
 
